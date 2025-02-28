@@ -20,7 +20,6 @@ interface Props {
 
 const EventItem = (props: Props) => {
   const {item, type} = props;
-  console.log('item', item);
 
   const navigation: any = useNavigation();
   return (

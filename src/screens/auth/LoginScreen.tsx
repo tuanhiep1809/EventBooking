@@ -18,13 +18,16 @@ import authenticationAPI from '../../apis/authApi';
 import {useDispatch} from 'react-redux';
 import {addAuthData} from '../../redux/reducers/authReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LoadingModal} from '../../modals';
 
 const LoginScreen = ({navigation}: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRemember, setIsRemember] = useState(false);
   const dispatch = useDispatch();
+  const [idLoading, setIsLoading] = useState(false);
   const handelLogin = async () => {
+    setIsLoading(true);
     try {
       const res = await authenticationAPI.HandleAuthentication(
         '/login',
@@ -39,12 +42,15 @@ const LoginScreen = ({navigation}: any) => {
         'auth',
         isRemember ? JSON.stringify(res.data) : res.data.email,
       );
+      setIsLoading(false);
     } catch (error) {
       console.log('error', error);
+      setIsLoading(false);
     }
   };
   return (
     <ContainerComponent isImageBackground>
+      <LoadingModal visible={idLoading} />
       <SectionComponent
         styles={{
           justifyContent: 'center',
@@ -68,7 +74,7 @@ const LoginScreen = ({navigation}: any) => {
           value={email}
           placeholder="Email"
           onChange={val => setEmail(val)}
-          type="number-pad"
+          type="email-address"
           allowClear
         />
         <InputComponent

@@ -4,6 +4,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   KeyboardType,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import React, {ReactNode, useState} from 'react';
 import {TextInput} from 'react-native';
@@ -21,6 +23,9 @@ interface Props {
   isPassword?: boolean;
   allowClear?: boolean;
   type?: KeyboardType;
+  multiline?: boolean;
+  numberOfLines?: number;
+  onEnd?: () => void;
 }
 const InputComponent = (props: Props) => {
   const {
@@ -32,6 +37,9 @@ const InputComponent = (props: Props) => {
     isPassword,
     allowClear,
     type,
+    numberOfLines,
+    multiline,
+    onEnd,
   } = props;
   const [isShowPassword, setIsShowPassword] = useState(isPassword ?? false);
   return (
@@ -39,8 +47,17 @@ const InputComponent = (props: Props) => {
       {affix ?? affix}
 
       <TextInput
-        style={[styles.Input, globalStyles.text]}
+        style={[
+          styles.Input,
+          globalStyles.text,
+          {
+            paddingHorizontal: affix || suffix ? 14 : 0,
+          },
+        ]}
+        numberOfLines={numberOfLines}
+        multiline={multiline}
         value={value}
+        onEndEditing={onEnd}
         onChangeText={val => onChange(val)}
         placeholder={placeholder ?? ''}
         secureTextEntry={isShowPassword}
@@ -90,6 +107,6 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
     flex: 1,
-    paddingHorizontal: 14,
+    // paddingHorizontal: 14,
   },
 });

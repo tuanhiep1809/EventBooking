@@ -29,7 +29,7 @@ const ContainerComponent = (props: Props) => {
 
   const headerComponent = () => {
     return (
-      <View style={{flex: 1, paddingTop: 10}}>
+      <View style={{flex: 1}}>
         {(title || back) && (
           <RowComponent
             styles={{
@@ -80,7 +80,7 @@ const ContainerComponent = (props: Props) => {
     </ImageBackground>
   ) : (
     <SafeAreaView style={[globalStyles.container]}>
-      <View>{headerComponent()}</View>
+      <View style={{flex: 1}}>{headerComponent()}</View>
     </SafeAreaView>
   );
 };

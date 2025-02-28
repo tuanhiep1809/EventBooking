@@ -1,19 +1,25 @@
 /* eslint-disable quotes */
 /* eslint-disable react/self-closing-comp */
-import React from 'react';
+import Geolocation from '@react-native-community/geolocation';
+import {
+  HambergerMenu,
+  Notification,
+  SearchNormal1,
+  Sort,
+} from 'iconsax-react-native';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   ImageBackground,
   Platform,
   ScrollView,
   StatusBar,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch} from 'react-redux';
 import {
-  ButtonComponent,
   CategoriesList,
   EventItem,
   RowComponent,
@@ -22,22 +28,17 @@ import {
   TabBarComponent,
   TextComponent,
 } from '../../components';
-import {removeAuthData} from '../../redux/reducers/authReducer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {globalStyles} from '../../styles/globalStyles';
-import {appColors} from '../../constants/appColors';
-import {
-  HambergerMenu,
-  Notification,
-  SearchNormal1,
-  Sort,
-} from 'iconsax-react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {fontFamilies} from '../../constants/fontFamilies';
 import CircleComponent from '../../components/CircleComponent';
 import TagComponent from '../../components/TagComponent';
+import {appColors} from '../../constants/appColors';
+import {fontFamilies} from '../../constants/fontFamilies';
+import {globalStyles} from '../../styles/globalStyles';
+import axios from 'axios';
+import {AddressModel} from '../../model/AddressModel';
 
 const HomeScreen = ({navigation}: any) => {
+  const [currentLocation, setCurrentLocation] = useState<AddressModel>();
+
   const itemEvent = {
     title: 'International Band Music Concert',
     description:
@@ -55,6 +56,33 @@ const HomeScreen = ({navigation}: any) => {
   };
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      info => {
+        if (info.coords) {
+          reverseGeoCode(info.coords.latitude, info.coords.longitude);
+        }
+      },
+      error => {
+        console.log('error', error);
+      },
+    );
+  }, []);
+  const reverseGeoCode = async (lat: number, long: number) => {
+    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${long}&lang=vi-VI&apikey=9JLAiMxeXTHrd69a8Hi88WAn_3oDNoen3NFqOcMrMHg`;
+    try {
+      const res = await axios(api);
+      if (res && res.status === 200) {
+        const item = res.data.items;
+        setCurrentLocation(item[0]);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+  console.log('currentLocation', currentLocation);
+
   return (
     <View style={[globalStyles.container]}>
       <StatusBar
@@ -88,13 +116,15 @@ const HomeScreen = ({navigation}: any) => {
                   color={appColors.white}
                 />
               </RowComponent>
-              <TextComponent
-                text="New York, USA"
-                flex={0}
-                color={appColors.white}
-                font={fontFamilies.medium}
-                size={13}
-              />
+              {currentLocation && (
+                <TextComponent
+                  text={`${currentLocation.address.city}, ${currentLocation.address.county}`}
+                  flex={0}
+                  color={appColors.white}
+                  font={fontFamilies.medium}
+                  size={13}
+                />
+              )}
             </View>
 
             <CircleComponent color="#524CE0" size={36}>
