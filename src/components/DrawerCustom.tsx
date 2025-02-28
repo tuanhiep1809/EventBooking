@@ -26,6 +26,7 @@ import {
   User,
 } from 'iconsax-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const DrawerCustom = ({navigation}: any) => {
   const user = useSelector(authSelector);
@@ -78,8 +79,9 @@ const DrawerCustom = ({navigation}: any) => {
   const handleSignOut = async () => {
     // await GoogleSignin.signOut();
     // await LoginManager.logOut();
-    dispatch(removeAuthData({}));
     await AsyncStorage.clear();
+    await GoogleSignin.signOut();
+    dispatch(removeAuthData({}));
   };
 
   return (
@@ -102,16 +104,16 @@ const DrawerCustom = ({navigation}: any) => {
               size={22}
               color={appColors.white}
               text={
-                user.fullname
-                  ? user.fullname
+                user.name
+                  ? user.name
                       .split(' ')
-                      [user.fullname.split(' ').length - 1].substring(0, 1)
+                      [user.name.split(' ').length - 1].substring(0, 1)
                   : ''
               }
             />
           </View>
         )}
-        <TextComponent text={user.fullname} title size={18} />
+        <TextComponent text={user.name} title size={18} />
       </TouchableOpacity>
       <FlatList
         showsVerticalScrollIndicator={false}

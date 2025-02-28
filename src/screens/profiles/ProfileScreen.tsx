@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addAuthData, removeAuthData} from '../../redux/reducers/authReducer';
 import {ButtonComponent} from '../../components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const ProfileScreen = () => {
   const auth = useSelector(addAuthData);
@@ -12,8 +13,9 @@ const ProfileScreen = () => {
     <View>
       <ButtonComponent
         onPress={async () => {
-          dispatch(removeAuthData({}));
           await AsyncStorage.clear();
+          await GoogleSignin.signOut();
+          dispatch(removeAuthData({}));
         }}
         text="Add Auth Data"
       />

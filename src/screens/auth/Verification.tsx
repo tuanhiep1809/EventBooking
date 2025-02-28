@@ -98,7 +98,7 @@ const Verification = ({navigation, route}: any) => {
         const data = {
           email,
           password,
-          username: username ?? '',
+          name: username ?? '',
         };
 
         try {

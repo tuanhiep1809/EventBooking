@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">EventBooking</string>
+    <string name="default_web_client_id">1037279516270-cb8sj7vin53asaaq5ahgc0prsj7q0njs.apps.googleusercontent.com</string>
+
 </resources>
