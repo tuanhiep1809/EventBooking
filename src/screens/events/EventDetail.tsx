@@ -164,7 +164,7 @@ const EventDetail = ({navigation, route}: any) => {
                     height: 48,
                     justifyContent: 'space-around',
                   }}>
-                  <TextComponent
+                  {/* <TextComponent
                     text={item.location.title}
                     font={fontFamilies.medium}
                     size={16}
@@ -172,7 +172,7 @@ const EventDetail = ({navigation, route}: any) => {
                   <TextComponent
                     text={item.location.address}
                     color={appColors.gray}
-                  />
+                  /> */}
                 </View>
               </RowComponent>
               <RowComponent styles={{marginBottom: 20}}>

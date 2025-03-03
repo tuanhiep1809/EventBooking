@@ -20,7 +20,7 @@ interface Props {
 
 const EventItem = (props: Props) => {
   const {item, type} = props;
-
+  console.log('item', item);
   const navigation: any = useNavigation();
   return (
     <CardComponent
@@ -33,7 +33,7 @@ const EventItem = (props: Props) => {
       }}>
       <ImageBackground
         style={{flex: 1, marginBottom: 12, height: 131, padding: 10}}
-        source={require('../assets/images/event-image.png')}
+        source={{uri: item.photoUrl}}
         imageStyle={{
           resizeMode: 'cover',
           borderRadius: 12,
@@ -44,13 +44,15 @@ const EventItem = (props: Props) => {
               color={appColors.danger2}
               font={fontFamilies.bold}
               size={18}
-              text="10"
+              text={new Date(item.date).getDate().toString()}
             />
             <TextComponent
               color={appColors.danger2}
               font={fontFamilies.semiBold}
               size={10}
-              text="JUNE"
+              text={appInfos.monthNames[
+                new Date(item.date).getMonth()
+              ].substring(0, 3)}
             />
           </CardComponent>
           <CardComponent styles={[globalStyles.noSpaceCard]} color="#ffffffB3">
@@ -63,11 +65,11 @@ const EventItem = (props: Props) => {
         </RowComponent>
       </ImageBackground>
       <TextComponent numberOfLine={1} text={item.title} title size={18} />
-      <AvatarGroup />
+      <AvatarGroup userIds={item.users} />
       <RowComponent justify="flex-start">
         <Location size={16} color={appColors.gray} />
         <SpaceComponent width={8} />
-        <TextComponent numberOfLine={1} text={item.location.address} />
+        <TextComponent numberOfLine={1} text={item.locationTitle} />
       </RowComponent>
     </CardComponent>
   );

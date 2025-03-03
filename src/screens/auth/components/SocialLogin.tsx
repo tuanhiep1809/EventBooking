@@ -56,12 +56,7 @@ const SocialLogin = () => {
         font={fontFamilies.medium}
         color={appColors.gray4}
       />
-      <ButtonComponent
-        text="Logout"
-        onPress={async () => {
-          await GoogleSignin.signOut();
-        }}
-      />
+
       <ButtonComponent
         type="primary"
         onPress={handleLoginWithGoogle}

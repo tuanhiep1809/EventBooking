@@ -43,9 +43,8 @@ const ChoiceLocation = (props: Props) => {
         visible={isVibleModalLocation}
         onClose={() => setIsVibleModalLocation(false)}
         onSelect={val => {
-          // setAddressSelected(val);
-          // onSelect(val);
-          console.log('aaa', val);
+          setAddressSelected(val);
+          onSelect(val);
         }}
       />
     </>

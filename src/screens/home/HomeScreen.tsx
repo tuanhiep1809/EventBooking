@@ -35,10 +35,12 @@ import {fontFamilies} from '../../constants/fontFamilies';
 import {globalStyles} from '../../styles/globalStyles';
 import axios from 'axios';
 import {AddressModel} from '../../model/AddressModel';
+import {EventModel} from '../../model/EventModel';
+import eventAPI from '../../apis/eventApi';
 
 const HomeScreen = ({navigation}: any) => {
   const [currentLocation, setCurrentLocation] = useState<AddressModel>();
-
+  const [eventsData, setEventsData] = useState<EventModel[]>([]);
   const itemEvent = {
     title: 'International Band Music Concert',
     description:
@@ -68,21 +70,33 @@ const HomeScreen = ({navigation}: any) => {
         console.log('error', error);
       },
     );
+    getEvents();
   }, []);
+
   const reverseGeoCode = async (lat: number, long: number) => {
     const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${long}&lang=vi-VI&apikey=9JLAiMxeXTHrd69a8Hi88WAn_3oDNoen3NFqOcMrMHg`;
     try {
       const res = await axios(api);
       if (res && res.status === 200) {
         const item = res.data.items;
+        console.log('res', res.data);
         setCurrentLocation(item[0]);
       }
     } catch (error) {
       console.log('error', error);
     }
   };
-  console.log('currentLocation', currentLocation);
-
+  const getEvents = async () => {
+    try {
+      const res = await eventAPI.HandleEvent('/get-events?limit=5');
+      if (res && res.data) {
+        // console.log('events', res.data);
+        setEventsData(res.data);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   return (
     <View style={[globalStyles.container]}>
       <StatusBar
@@ -200,9 +214,9 @@ const HomeScreen = ({navigation}: any) => {
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={Array.from({length: 5})}
+          data={eventsData}
           renderItem={({item, index}) => (
-            <EventItem key={index} type="card" item={itemEvent} />
+            <EventItem key={index} type="card" item={item} />
           )}
         />
         <SectionComponent>
@@ -236,14 +250,14 @@ const HomeScreen = ({navigation}: any) => {
           </ImageBackground>
         </SectionComponent>
         <TabBarComponent onPress={() => {}} title="Nearby You" />
-        <FlatList
+        {/* <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
           data={Array.from({length: 5})}
           renderItem={({item, index}) => (
             <EventItem key={index} type="card" item={itemEvent} />
           )}
-        />
+        /> */}
       </ScrollView>
     </View>
   );

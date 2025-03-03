@@ -78,6 +78,7 @@ const InputComponent = (props: Props) => {
             color="black"
           />
         ) : (
+          value &&
           value.length > 0 &&
           allowClear && (
             <AntDesign name="closecircleo" size={22} color="black" />
