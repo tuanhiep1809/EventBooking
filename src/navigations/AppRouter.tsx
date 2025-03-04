@@ -28,7 +28,6 @@ const AppRouter = () => {
       dispatch(addAuthData(JSON.parse(data)));
     }
   };
-  console.log('auth', auth);
   return (
     <>
       {isSplash ? (

@@ -23,6 +23,8 @@ import {appColors} from '../../constants/appColors';
 import {globalStyles} from '../../styles/globalStyles';
 import {fontFamilies} from '../../constants/fontFamilies';
 import {EventModel} from '../../model/EventModel';
+import {DateTime} from '../../utils/DateTime';
+import {appInfos} from '../../constants/appInfos';
 
 const EventDetail = ({navigation, route}: any) => {
   const {item}: {item: EventModel} = route.params;
@@ -30,7 +32,7 @@ const EventDetail = ({navigation, route}: any) => {
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <ImageBackground
-        source={require('../../assets/images/event-image.png')}
+        source={{uri: item.photoUrl}}
         style={{flex: 1, height: 244}}
         imageStyle={{
           resizeMode: 'cover',
@@ -40,7 +42,7 @@ const EventDetail = ({navigation, route}: any) => {
             styles={{
               padding: 16,
               alignItems: 'flex-end',
-              paddingTop: 42,
+              paddingTop: 22,
             }}>
             <RowComponent styles={{flex: 1}}>
               <TouchableOpacity
@@ -75,37 +77,43 @@ const EventDetail = ({navigation, route}: any) => {
           showsVerticalScrollIndicator={false}
           style={{
             flex: 1,
-            paddingTop: 244 - 130,
+            paddingTop: 130,
           }}>
-          <SectionComponent>
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                flex: 1,
-              }}>
-              <RowComponent
-                justify="space-between"
-                styles={[
-                  globalStyles.shadow,
-                  {
-                    backgroundColor: appColors.white,
-                    borderRadius: 100,
-                    paddingHorizontal: 12,
-                    width: '90%',
-                  },
-                ]}>
-                <AvatarGroup size={36} />
-                <TouchableOpacity
-                  style={[
-                    globalStyles.button,
-                    {backgroundColor: appColors.primary, paddingVertical: 8},
+          {item.users.length > 0 ? (
+            <SectionComponent>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flex: 1,
+                }}>
+                <RowComponent
+                  justify="space-between"
+                  styles={[
+                    globalStyles.shadow,
+                    {
+                      backgroundColor: appColors.white,
+                      borderRadius: 100,
+                      paddingHorizontal: 12,
+                      width: '90%',
+                    },
                   ]}>
-                  <TextComponent text="Invite" color={appColors.white} />
-                </TouchableOpacity>
-              </RowComponent>
-            </View>
-          </SectionComponent>
+                  <AvatarGroup userIds={item.users} size={36} />
+                  <TouchableOpacity
+                    style={[
+                      globalStyles.button,
+                      {backgroundColor: appColors.primary, paddingVertical: 8},
+                    ]}>
+                    <TextComponent text="Invite" color={appColors.white} />
+                  </TouchableOpacity>
+                </RowComponent>
+              </View>
+            </SectionComponent>
+          ) : (
+            <>
+              <ButtonComponent type="primary" text="Invite" />
+            </>
+          )}
           <View
             style={{
               backgroundColor: appColors.white,
@@ -137,12 +145,14 @@ const EventDetail = ({navigation, route}: any) => {
                     justifyContent: 'space-around',
                   }}>
                   <TextComponent
-                    text="14 December, 2021"
+                    text={DateTime.GetDate(new Date(item.date))}
                     font={fontFamilies.medium}
                     size={16}
                   />
                   <TextComponent
-                    text="Tuesday, 4:00PM - 9:00PM"
+                    text={`${
+                      appInfos.dayNames[new Date(item.date).getDate()]
+                    }, ${DateTime.GetStartAndEnd(item.startAt, item.endAt)}`}
                     color={appColors.gray}
                   />
                 </View>
@@ -164,15 +174,15 @@ const EventDetail = ({navigation, route}: any) => {
                     height: 48,
                     justifyContent: 'space-around',
                   }}>
-                  {/* <TextComponent
-                    text={item.location.title}
+                  <TextComponent
+                    text={item.locationTitle}
                     font={fontFamilies.medium}
                     size={16}
                   />
                   <TextComponent
-                    text={item.location.address}
+                    text={item.locationAddress}
                     color={appColors.gray}
-                  /> */}
+                  />
                 </View>
               </RowComponent>
               <RowComponent styles={{marginBottom: 20}}>

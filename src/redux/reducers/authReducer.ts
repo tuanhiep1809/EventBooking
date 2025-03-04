@@ -3,6 +3,7 @@ interface AuthState {
   id: string;
   email: string;
   accessToken: string;
+  fcmTokens?: string[];
 }
 const initialState: AuthState = {
   id: '',

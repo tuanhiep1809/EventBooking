@@ -79,7 +79,6 @@ const HomeScreen = ({navigation}: any) => {
       const res = await axios(api);
       if (res && res.status === 200) {
         const item = res.data.items;
-        console.log('res', res.data);
         setCurrentLocation(item[0]);
       }
     } catch (error) {
