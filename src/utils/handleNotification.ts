@@ -25,8 +25,10 @@ export class HandleNotification {
   };
   static getFcmToken = async () => {
     const fcmtoken = await AsyncStorage.getItem('fcmtoken');
+    console.log('fcmtoken', fcmtoken);
     if (!fcmtoken) {
       const token = await messaging().getToken();
+      console.log('fcm token được tạo mới', token);
       if (token) {
         await AsyncStorage.setItem('fcmtoken', token);
         this.updateTokenForUser(token);
@@ -51,7 +53,7 @@ export class HandleNotification {
   static Update = async (id: string, fcmTokens: string[]) => {
     try {
       const res = await userAPI.HandleUser(
-        '//update-fcm-token',
+        '/update-fcm-token',
         {
           uid: id,
           fcmTokens,

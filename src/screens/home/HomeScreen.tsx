@@ -14,6 +14,7 @@ import {
   Platform,
   ScrollView,
   StatusBar,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -37,7 +38,7 @@ import axios from 'axios';
 import {AddressModel} from '../../model/AddressModel';
 import {EventModel} from '../../model/EventModel';
 import eventAPI from '../../apis/eventApi';
-
+import messaging from '@react-native-firebase/messaging';
 const HomeScreen = ({navigation}: any) => {
   const [currentLocation, setCurrentLocation] = useState<AddressModel>();
   const [eventsData, setEventsData] = useState<EventModel[]>([]);
@@ -71,6 +72,14 @@ const HomeScreen = ({navigation}: any) => {
       },
     );
     getEvents();
+    messaging().onMessage(async remoteMessage => {
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(
+          remoteMessage.notification?.body || '',
+          ToastAndroid.SHORT,
+        );
+      }
+    });
   }, []);
 
   const reverseGeoCode = async (lat: number, long: number) => {

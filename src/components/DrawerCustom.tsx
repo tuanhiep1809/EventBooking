@@ -27,7 +27,7 @@ import {
 } from 'iconsax-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {AuthState} from './../../../../eventhub/src/redux/reducers/authReducer';
+
 import {HandleNotification} from '../utils/handleNotification';
 
 const DrawerCustom = ({navigation}: any) => {
@@ -96,6 +96,7 @@ const DrawerCustom = ({navigation}: any) => {
     // await GoogleSignin.signOut();
     // await LoginManager.logOut();
     await GoogleSignin.signOut();
+    // await AsyncStorage.removeItem('fcmtoken');
     await AsyncStorage.removeItem('auth');
     dispatch(removeAuthData({}));
   };

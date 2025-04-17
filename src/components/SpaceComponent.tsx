@@ -1,10 +1,10 @@
 import React from 'react';
 import {View} from 'react-native';
-interface SpaceComponentProps {
+interface Props {
   width?: number;
   height?: number;
 }
-const SpaceComponent = (prop: SpaceComponentProps) => {
+const SpaceComponent = (prop: Props) => {
   const {width, height} = prop;
   return (
     <View
